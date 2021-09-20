@@ -1,0 +1,58 @@
+﻿@using FinanceMentor.Shared
+
+<div class="card">
+	<div class="card-header">
+		Add an earning
+	</div>
+	<div class="card-body">
+		<EditForm Model="@earning" OnValidSubmit="@HandleValidSubmit">
+			<DataAnnotationsValidator />
+			<ValidationSummary />
+
+			<div class="form-group">
+				<label for="dateInput">Date</label>
+				<InputDate class="form-control" id="dateInput" @bind-Value="earning.Date"></InputDate>
+			</div>
+			<div class="form-group">
+				<label for="Subjectnput">Subject</label>
+				<InputText class="form-control" id="subjectInput" @bind-Value="earning.Subject"></InputText>
+			</div>
+			<div class="form-group">
+				<label for="Subjectnput">Category</label>
+				<InputSelect class="form-control" id="categoryInput" @bind-Value="earning.Category">
+					@{
+						foreach(var value in Enum.GetValues(typeof(EarningCategory)))
+						{
+							<option value="@value">@value</option>
+						}
+					}
+				</InputSelect>
+			</div>
+			<div class="form-group">
+				<label for="amountnput">Amount</label>
+				<InputNumber class="form-control" id="amountInput" @bind-Value="earning.Amount"></InputNumber>
+			</div>
+			<div class="mb-2">
+				<button class="btn btn-outline-primary" type="submit">Submit</button>
+			</div>
+			@if(!string.IsNullOrEmpty(success))
+			{
+				<div class="alert alert-success">
+					@success
+				</div>
+			}
+		</EditForm>
+	</div>
+
+</div>
+
+@code {
+	private EarningModel earning = new EarningModel { Date = DateTime.Today };
+	private string success = "";
+
+	public void HandleValidSubmit()
+	{
+		success = "success";
+	}
+
+}
