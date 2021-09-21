@@ -44,9 +44,13 @@
 @code {
 	private EarningModel earning = new EarningModel { Date = DateTime.Today };
 
+	[Parameter]
+	public EventCallback OnSubmitCallBack { get; set; }
+
 	public async Task HandleValidSubmit()
 	{
 		await Http.PostAsJsonAsync<EarningModel>("api/Earnings", earning);
+		await OnSubmitCallBack.InvokeAsync();
 	}
 
 }
