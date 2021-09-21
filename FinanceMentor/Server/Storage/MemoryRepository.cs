@@ -7,19 +7,25 @@ namespace FinanceMentor.Server.Storage
 {
     public class MemoryRepository<T> : IRepository<T>
     {
+        private readonly IList<T> _entities;
+        public MemoryRepository()
+        {
+            _entities = new List<T>();
+        }
+
         public void Add(T entity)
         {
-            throw new NotImplementedException();
+            _entities.Add(entity);
         }
 
         public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _entities;
         }
 
         public void Remove(T entity)
         {
-            throw new NotImplementedException();
+            _entities.Remove(entity);
         }
     }
 }

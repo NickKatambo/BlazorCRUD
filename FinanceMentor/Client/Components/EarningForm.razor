@@ -1,4 +1,5 @@
 ﻿@using FinanceMentor.Shared
+@inject HttpClient Http;
 
 <div class="card">
 	<div class="card-header">
@@ -35,12 +36,6 @@
 			<div class="mb-2">
 				<button class="btn btn-outline-primary" type="submit">Submit</button>
 			</div>
-			@if(!string.IsNullOrEmpty(success))
-			{
-				<div class="alert alert-success">
-					@success
-				</div>
-			}
 		</EditForm>
 	</div>
 
@@ -48,11 +43,10 @@
 
 @code {
 	private EarningModel earning = new EarningModel { Date = DateTime.Today };
-	private string success = "";
 
-	public void HandleValidSubmit()
+	public async Task HandleValidSubmit()
 	{
-		success = "success";
+		await Http.PostAsJsonAsync<EarningModel>("api/Earnings", earning);
 	}
 
 }

@@ -1,4 +1,5 @@
-﻿using FinanceMentor.Shared;
+﻿using FinanceMentor.Server.Storage;
+using FinanceMentor.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,12 @@ namespace FinanceMentor.Server.Controllers
         {
             return _earningRepository.GetAll()
                 .OrderBy(earning => earning.Date);
+        }
+
+        [HttpPost]
+        public void Post(Earning earning)
+        {
+            _earningRepository.Add(earning);
         }
     }
 }
