@@ -70,7 +70,7 @@
 	{
 		if(accepted)
 		{
-			await Http.DeleteAsync($"api/Expense/{_expenseToDelete.Id}");
+			await Http.DeleteAsync($"api/Expenses/{_expenseToDelete.Id}");
 			await LoadData();
 			_expenseToDelete = null;
 		}
@@ -93,7 +93,7 @@
 
 	private async Task LoadData()
 	{
-		expenses = await Http.GetFromJsonAsync<Expense[]>("api/Expense");
+		expenses = await Http.GetFromJsonAsync<Expense[]>("api/Expenses");
 		StateHasChanged();	
 	}
 

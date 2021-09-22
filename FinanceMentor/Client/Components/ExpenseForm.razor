@@ -49,7 +49,7 @@
 
 	public async Task HandleValidSubmit()
 	{
-		await Http.PostAsJsonAsync<ExpenseModel>("api/Expense", expense);
+		await Http.PostAsJsonAsync<ExpenseModel>("api/Expenses", expense);
 		await OnSubmitCallBack.InvokeAsync();
 	}
 

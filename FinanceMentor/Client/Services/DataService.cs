@@ -13,9 +13,9 @@ namespace FinanceMentor.Client.Services
         private readonly HttpClient _httpClient;
         private readonly int _currentYear = DateTime.Today.Year;
 
-        public DataService(HttpClient httpClient)
+        public DataService(HttpClient http)
         {
-            this._httpClient = httpClient;
+            _httpClient = http;
         }
 
         public async Task<ICollection<YearlyItem>> LoadCurrentYearEarnings()
@@ -35,7 +35,7 @@ namespace FinanceMentor.Client.Services
 
         public async Task<ICollection<YearlyItem>> LoadCurrentYearExpenses()
         {
-            var data = await _httpClient.GetFromJsonAsync<Expense[]>("api/Expense");
+            var data = await _httpClient.GetFromJsonAsync<Expense[]>("api/Expenses");
             return data.Where(expense => expense.Date >= new DateTime(_currentYear, 1, 1)
                 && expense.Date <= new DateTime(_currentYear, 12, 31))
                 .GroupBy(expense => expense.Date.Month)
@@ -74,6 +74,20 @@ namespace FinanceMentor.Client.Services
             };
         }
 
+        private async Task<ICollection<MonthlyItem>> GetMonthlyEarnings(int month, int year)
+        {
+            var data = await _httpClient.GetFromJsonAsync<Earning[]>("api/Earnings");
+            return data.Where(earning => earning.Date >= new DateTime(year, month, 1)
+                && earning.Date <= new DateTime(year, month, LastDayOfMonth(month, year)))
+                .GroupBy(earning => earning.Category)
+                .Select(earning => new MonthlyItem
+                {
+                    Amount = earning.Sum(item => item.Amount),
+                    Category = earning.Key.ToString()
+                })
+                .ToList();
+        }
+
         public async Task<ThreeMonthsData> LoadLast3MonthsExpenses()
         {
             var currentMonth = DateTime.Today.Month;
@@ -100,23 +114,9 @@ namespace FinanceMentor.Client.Services
             };
         }
 
-        private async Task<ICollection<MonthlyItem>> GetMonthlyEarnings(int month, int year)
-        {
-            var data = await _httpClient.GetFromJsonAsync<Earning[]>("api/Earnings");
-            return data.Where(earning => earning.Date >= new DateTime(year, month, 1)
-                && earning.Date <= new DateTime(year, month, LastDayOfMonth(month, year)))
-                .GroupBy(earning => earning.Category)
-                .Select(earning => new MonthlyItem
-                {
-                    Amount = earning.Sum(item => item.Amount),
-                    Category = earning.Key.ToString()
-                })
-                .ToList();
-        }
-
         private async Task<ICollection<MonthlyItem>> GetMonthlyExpenses(int month, int year)
         {
-            var data = await _httpClient.GetFromJsonAsync<Expense[]>("api/Expense");
+            var data = await _httpClient.GetFromJsonAsync<Expense[]>("api/Expenses");
             return data.Where(expense => expense.Date >= new DateTime(year, month, 1)
                 && expense.Date <= new DateTime(year, month, LastDayOfMonth(month, year)))
                 .GroupBy(expense => expense.Category)

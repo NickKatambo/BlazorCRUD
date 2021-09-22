@@ -10,11 +10,11 @@ namespace FinanceMentor.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExpenseController : ControllerBase
+    public class ExpensesController : ControllerBase
     {
         private readonly IRepository<Expense> _expenseRepository;
 
-        public ExpenseController(IRepository<Expense> expenseRepository)
+        public ExpensesController(IRepository<Expense> expenseRepository)
         {
             _expenseRepository = expenseRepository;
         }
