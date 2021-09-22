@@ -1,7 +1,45 @@
 ﻿@page "/"
+@using System.Globalization
+@using FinanceMentor.Client.Services;
+@inject IDataService _dataService;
 
-<h1>Hello, world!</h1>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                @currentYear - Earnings and Expenses
+            </div>
+            <div class="card-body">
+                <RadzenChart>
+                    <RadzenColumnSeries Fill="#AACDBE" Data="@yearlyEarnings" CategoryProperty="Month" ValueProperty="Amount" Title="Earnings" LineType="LineType.Dashed"></RadzenColumnSeries>
+                    <RadzenColumnSeries Fill="#EA907A" Data="@yearlyExpenses" CategoryProperty="Month" ValueProperty="Amount" Title="Expenses" LineType="LineType.Dashed"></RadzenColumnSeries>
+                    <RadzenColumnOptions Radius="5" />
+                    <RadzenValueAxis Formatter="@FormatAsUSD">
+                        <RadzenGridLines Visible="true" />
+                        <RadzenAxisTitle Text="Amount in USD" />
+                    </RadzenValueAxis>
+                </RadzenChart>
+            </div>
+        </div>
+    </div>
+</div>
 
-Welcome to your new app.
+@code{
+    private static int currentYear = DateTime.Today.Year;
+    private ICollection<YearlyItem> yearlyExpenses;
+    private ICollection<YearlyItem> yearlyEarnings;
 
+    protected override async Task OnInitializedAsync()
+    {
+        yearlyExpenses = await _dataService.LoadCurrentYearExpenses();
+        yearlyEarnings = await _dataService.LoadCurrentYearEarnings();
 
+        StateHasChanged();
+    }
+
+    string FormatAsUSD(object value)
+    {
+        return ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("en-US"));
+    }
+
+}

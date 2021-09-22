@@ -9,7 +9,7 @@ namespace FinanceMentor.Client.Services
     {
         Task<ICollection<YearlyItem>> LoadCurrentYearExpenses();
         Task<ICollection<YearlyItem>> LoadCurrentYearEarnings();
-        Task<ThreeMonthsData> LoadLastMonthsExpenses();
+        Task<ThreeMonthsData> LoadLast3MonthsExpenses();
         Task<ThreeMonthsData> LoadLast3MonthsEarnings();
     }
 }
