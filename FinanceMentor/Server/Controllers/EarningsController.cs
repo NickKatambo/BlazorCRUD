@@ -19,6 +19,7 @@ namespace FinanceMentor.Server.Controllers
             _earningRepository = earningRepository;
         }
 
+        [HttpGet]
         public IEnumerable<Earning> Get()
         {
             return _earningRepository.GetAll()

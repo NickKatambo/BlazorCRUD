@@ -15,10 +15,11 @@ namespace FinanceMentor.Shared
         Debt,
         Gifts,
         Savings,
+        Education,
         Transportation,
         Entertainment,
         Fuel,
-        Rent,
+        Housing,
         School,
         Utilities
     }
