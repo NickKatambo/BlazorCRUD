@@ -1,4 +1,4 @@
-#BlazorCRUD
+## BlazorCRUD
 Create a web application using Blazor application based on .NET 5 with the help of Entity Framework Core
 
 Prerequisites
